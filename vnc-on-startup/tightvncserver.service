@@ -1,0 +1,12 @@
+[Unit]
+Description=TightVNC Server
+After=network.target
+
+[Service]
+Type=forking
+User=pi
+ExecStart=/usr/bin/tightvncserver :1
+ExecStop=/usr/bin/tightvncserver -kill :1
+
+[Install]
+WantedBy=multi-user.target
