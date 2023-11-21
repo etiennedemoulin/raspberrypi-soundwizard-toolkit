@@ -1,12 +1,15 @@
 [Unit]
-Description=TightVNC Server
+Description=Remote desktop service (VNC)
 After=syslog.target network.target
 
 [Service]
 Type=forking
 User=pi
-ExecStart=/usr/bin/tightvncserver :1
-ExecStop=/usr/bin/tightvncserver -kill :1
+PAMName=login
+PIDFile=/home/pi/.vnc/%H:%i.pid
+ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1
+ExecStart=/usr/bin/vncserver -depth 24 -geometry 1280x800 :%i
+ExecStop=/usr/bin/vncserver -kill :%i
 
 [Install]
 WantedBy=multi-user.target
